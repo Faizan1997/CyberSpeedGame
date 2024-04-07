@@ -9,14 +9,7 @@ public class GameLogic {
         this.config = config;
     }
 
-    public void play(int bettingAmount) {
-        Symbol[][] matrix = generateMatrix();
-        Map<Symbol, List<String>> appliedWinningCombinations = checkWinningCombinations(matrix);
-        Symbol appliedBonusSymbol = applyBonuses(matrix);
-        int reward = calculateReward(bettingAmount, appliedWinningCombinations, appliedBonusSymbol);
-        outputResult(matrix, reward, appliedWinningCombinations, appliedBonusSymbol);
-    }
-    
+   
     public void play(int bettingAmount) {
         Symbol[][] matrix = generateMatrix();
         Map<Symbol, List<String>> appliedWinningCombinations = checkWinningCombinations(matrix);
@@ -47,12 +40,12 @@ public class GameLogic {
     }
 
     private Map<Symbol, List<String>> checkWinningCombinations(Symbol[][] matrix) {
-        Map<Symbol, List<String>> appliedWinningCombinations = new HashMap<>();
+        Map<Symbol, List<String>> appliedWinningCombinations = new HashMap();
         for (Symbol symbol : Symbol.values()) {
-            List<String> winningCombinations = new ArrayList<>();
+            List<String> winningCombinations = new ArrayList();
             for (Map.Entry<String, WinningCombination> entry : config.getWinCombinations().entrySet()) {
                 WinningCombination winningCombination = entry.getValue();
-                if (winningCombination.getWhen() == WinningCombinationCondition.SAME_SYMBOLS) {
+                if (winningCombination.getWhen().equals( WinningCombinationCondition.SAME_SYMBOLS)) {
                     int count = 0;
                     for (int i = 0; i < matrix.length; i++) {
                         for (int j = 0; j < matrix[i].length; j++) {
@@ -105,19 +98,15 @@ public class GameLogic {
             }
         }
         if (appliedBonusSymbol != null) {
-            switch (appliedBonusSymbol.getName()) {
-                case "10x":
-                    totalReward *= 10;
-                    break;
-                case "5x":
-                    totalReward *= 5;
-                    break;
-                case "+1000":
-                    totalReward += 1000;
-                    break;
-                case "+500":
-                    totalReward += 500;
-                    break;
+            String bonusSymbolName = appliedBonusSymbol.getName();
+            if (bonusSymbolName.equals("10x")) {
+                totalReward *= 10;
+            } else if (bonusSymbolName.equals("5x")) {
+                totalReward *= 5;
+            } else if (bonusSymbolName.equals("+1000")) {
+                totalReward += 1000;
+            } else if (bonusSymbolName.equals("+500")) {
+                totalReward += 500;
             }
         }
         return totalReward;

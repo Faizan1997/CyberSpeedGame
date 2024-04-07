@@ -39,6 +39,10 @@ public Map<String, WinningCombination> getWinCombinations() {
 public void setWinCombinations(Map<String, WinningCombination> winCombinations) {
 	this.winCombinations = winCombinations;
 }
+public Configuration getProbabilities() {
+	// TODO Auto-generated method stub
+	return null;
+}
 
  
 }
